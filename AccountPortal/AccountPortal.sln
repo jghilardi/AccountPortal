@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26403.7
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AccountPortal.Console", "AccountPortal\AccountPortal.Console.csproj", "{B2850B63-7692-46D4-8B77-C8FF7FC8DB8F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AccountPortal.Console", "AccountPortal.Console\AccountPortal.Console.csproj", "{B2850B63-7692-46D4-8B77-C8FF7FC8DB8F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AccountPortal.Domain", "AccountPortal.Domain\AccountPortal.Domain.csproj", "{9B40BFEC-1418-4FB4-9F02-5DA27DB52EFB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AccountPortal.Data", "AccountPortal.data\AccountPortal.Data.csproj", "{432E274F-B911-420C-BF02-BDE7F01F6F04}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AccountPortal.Data", "AccountPortal.Data\AccountPortal.Data.csproj", "{432E274F-B911-420C-BF02-BDE7F01F6F04}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
