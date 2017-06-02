@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Linq;
 using AccountPortal.Domain.Extensions;
 using AccountPortal.Domain.Models;
 using AccountPortal.Domain.Processors.Interfaces;
 using LazyCache;
-using System.Collections.Generic;
 
 namespace AccountPortal.Domain.Processors
 {
@@ -59,10 +57,10 @@ namespace AccountPortal.Domain.Processors
                 {
                     var accountResponse = new Account
                     {
-                        Username = account.Username,
-                        AccountBalance = account.AccountBalance,
-                        Password = account.Password,
-                        Transactions = account.Transactions
+                        Username = getAccount.Username,
+                        AccountBalance = getAccount.AccountBalance,
+                        Password = getAccount.Password,
+                        Transactions = getAccount.Transactions
                     };
                     response = accountResponse;
                 }

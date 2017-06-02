@@ -39,6 +39,7 @@ namespace AccountPortal.Domain.Processors
                         break;
                     case 2:
                         activeUser = LoginAccount(cache);
+                        Console.WriteLine($"Welcome, {activeUser.Username}" + NewLine);
                         break;
                     default:
                         Console.WriteLine(NewLine + "Please make a valid selection." + NewLine);
