@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AccountPortal.Domain", "Acc
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AccountPortal.Data", "AccountPortal.Data\AccountPortal.Data.csproj", "{432E274F-B911-420C-BF02-BDE7F01F6F04}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AccountPortal.Web", "AccountPortal.Web\AccountPortal.Web.csproj", "{8D0585CD-B40C-4944-AEC1-89302D659F1E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{432E274F-B911-420C-BF02-BDE7F01F6F04}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{432E274F-B911-420C-BF02-BDE7F01F6F04}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{432E274F-B911-420C-BF02-BDE7F01F6F04}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8D0585CD-B40C-4944-AEC1-89302D659F1E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D0585CD-B40C-4944-AEC1-89302D659F1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D0585CD-B40C-4944-AEC1-89302D659F1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D0585CD-B40C-4944-AEC1-89302D659F1E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
