@@ -4,6 +4,7 @@ using AccountPortal.Domain.Extensions;
 using AccountPortal.Domain.Models;
 using AccountPortal.Domain.Processors.Interfaces;
 using LazyCache;
+using System.Collections.Generic;
 
 namespace AccountPortal.Domain.Processors
 {
@@ -15,32 +16,38 @@ namespace AccountPortal.Domain.Processors
         {
             _encryptionUtility = encryptionUtility;
         }
+
         public Account AddAccount(IAppCache cache, Account account)
         {
             var response = new Account();
             try
             {
                 var getAccount = cache.Get<Account>(account.Username);
-                if (getAccount == null && account.Username.Length < 50 && account.Password.Length > 3) // regex??
+                if (getAccount == null && account.Username.Length < 50 && account.Password.Length > 3)
                 {
                     account.Password = _encryptionUtility.Encrypt(account.Password);
                     cache.Add(account.Username, account);
-                    response.Username = account.Username;
-                    response.AccountBalance = account.AccountBalance;
+                    var accountResponse = new Account
+                    {
+                        Username = account.Username,
+                        AccountBalance = account.AccountBalance,
+                        Password = account.Password,
+                        Transactions = account.Transactions
+                    };
+                    response = accountResponse;
                 }
                 else
                 {
-                    response.Messages.Add("Invalid username or password.  Please try again.");
+                    response.Messages.Add("Invalid username or password.");
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                response.Messages.Add("An unknown error occured.");
                 //log exception
+                response.Messages.Add("An unknown error occured.");
             }
             return response;
         }
-
 
         public Account GetAccount(IAppCache cache, Account account)
         {
@@ -50,8 +57,14 @@ namespace AccountPortal.Domain.Processors
                 var getAccount = cache.Get<Account>(account.Username);
                 if (getAccount != null && account.Password == _encryptionUtility.Decrypt(getAccount.Password))
                 {
-                    response.Username = getAccount.Username;
-                    response.AccountBalance = getAccount.AccountBalance;
+                    var accountResponse = new Account
+                    {
+                        Username = account.Username,
+                        AccountBalance = account.AccountBalance,
+                        Password = account.Password,
+                        Transactions = account.Transactions
+                    };
+                    response = accountResponse;
                 }
                 else
                 {
@@ -59,12 +72,18 @@ namespace AccountPortal.Domain.Processors
                 }
 
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                response.Messages.Add("An unknown error occured.");
                 //log exception
+                response.Messages.Add("An unknown error occured.");
             }
             return response;
+        }
+
+        public void UpdateCache(IAppCache cache, Account activeUser)
+        {
+            cache.Remove(activeUser.Username);
+            cache.Add(activeUser.Username, activeUser);
         }
     }
 }

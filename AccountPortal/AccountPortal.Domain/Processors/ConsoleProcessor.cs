@@ -1,10 +1,10 @@
 ﻿using System;
 using AccountPortal.Data;
-using AccountPortal.Domain.Extensions;
 using AccountPortal.Domain.Models;
 using AccountPortal.Domain.Processors.Interfaces;
 using LazyCache;
 using static System.Environment;
+using System.Collections.Generic;
 
 namespace AccountPortal.Domain.Processors
 {
@@ -27,7 +27,7 @@ namespace AccountPortal.Domain.Processors
             GetRootMenu(cache);
         }
 
-        private void GetRootMenu(IAppCache cache)
+        public void GetRootMenu(IAppCache cache)
         {
             while (true)
             {
@@ -54,6 +54,7 @@ namespace AccountPortal.Domain.Processors
                 else if (activeUser?.Messages.Count > 0)
                 {
                     activeUser.Messages.ForEach(x => Console.WriteLine(x + NewLine));
+                    activeUser.Messages = new List<string>();
                     continue;
                 }
                 else
@@ -65,7 +66,7 @@ namespace AccountPortal.Domain.Processors
             }
         }
 
-        private void GetTransactionMenu(IAppCache cache, Account activeUser)
+        public void GetTransactionMenu(IAppCache cache, Account activeUser)
         {
             while (true)
             {
@@ -78,15 +79,25 @@ namespace AccountPortal.Domain.Processors
                     case 2:
                         Console.WriteLine("Please enter a deposit amount: ");
                         var depositAmount = Console.ReadLine();
-                        _transactionProcessor.Deposit(activeUser, depositAmount);
+                        var depositResponse =_transactionProcessor.Deposit(activeUser, depositAmount);
+                        if (depositResponse.Messages.Count > 0)
+                        {
+                            depositResponse.Messages.ForEach(x=> Console.WriteLine(x + NewLine));
+                            activeUser.Messages = new List<string>();
+                        }
                         continue;
                     case 3:
                         Console.WriteLine("Please enter an amount to withdraw: ");
                         var withdrawAmount = Console.ReadLine();
-                        _transactionProcessor.Withdraw(activeUser, withdrawAmount);
+                        var withdrawResponse = _transactionProcessor.Withdraw(activeUser, withdrawAmount);
+                        if (withdrawResponse.Messages.Count > 0)
+                        {
+                            withdrawResponse.Messages.ForEach(x => Console.WriteLine(x + NewLine));
+                            activeUser.Messages = new List<string>();
+                        }
                         continue;
                     case 4:
-                        UpdateCache(cache,activeUser);
+                        _accountProcessor.UpdateCache(cache,activeUser);
                         GetRootMenu(cache);
                         break;
                     default:
@@ -99,7 +110,7 @@ namespace AccountPortal.Domain.Processors
             }
         }
 
-        private static void ShowHistoricalTransactions(Account activeUser)
+        public void ShowHistoricalTransactions(Account activeUser)
         {
             if (activeUser.Transactions.Count > 0)
             {
@@ -118,14 +129,14 @@ namespace AccountPortal.Domain.Processors
 
         public int DisplayRootMenu()
         {
-            Console.WriteLine(NewLine + "Welcome to the Generic Account Portal. Please choose from the following options: " + NewLine);
+            Console.WriteLine("Welcome to the Generic Account Portal. Please choose from the following options: " + NewLine);
             Console.WriteLine("1. Create new account" + NewLine);
             Console.WriteLine("2. Login to existing account" + NewLine);
 
             return ValidateMenuInput();
         }
 
-        private static int ValidateMenuInput()
+        public int ValidateMenuInput()
         {
             var output = 0;
             var input = Console.ReadLine();
@@ -159,7 +170,7 @@ namespace AccountPortal.Domain.Processors
 
         public int DisplayTransactionMenu(decimal accountBalance)
         {
-            Console.WriteLine(NewLine + $"Your account balance is: ${accountBalance}" + NewLine);
+            Console.WriteLine($"Your account balance is: ${accountBalance}" + NewLine);
             Console.WriteLine("Please select from the following options: " + NewLine);
             Console.WriteLine("1. View Transaction History" + NewLine);
             Console.WriteLine("2. Deposit funds" + NewLine);
@@ -167,12 +178,6 @@ namespace AccountPortal.Domain.Processors
             Console.WriteLine("4. Logout of current account" + NewLine);
 
             return ValidateMenuInput();
-        }
-
-        public void UpdateCache(IAppCache cache, Account activeUser)
-        {
-            cache.Remove(activeUser.Username);
-            _accountProcessor.AddAccount(cache, activeUser);
         }
     }
 }

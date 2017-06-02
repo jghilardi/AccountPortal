@@ -1,6 +1,7 @@
 ﻿using System;
 using AccountPortal.Domain.Models;
 using AccountPortal.Domain.Processors.Interfaces;
+using System.Globalization;
 
 namespace AccountPortal.Domain.Processors
 {
@@ -8,44 +9,69 @@ namespace AccountPortal.Domain.Processors
     {
         public Account Deposit(Account account, string amount)
         {
-            var depositAmount = 0m;
-            decimal.TryParse(amount, out depositAmount);
-            if (depositAmount > 0 && depositAmount <= 99999)
+            try
             {
-                account.AccountBalance += depositAmount;
-                account.Transactions.Add(new Transaction
+                var depositAmount = 0m;
+                decimal.TryParse(amount, out depositAmount);
+                if (depositAmount > 0 && depositAmount <= 99999 && LessThanThreeDecimalPlaces(depositAmount))
                 {
-                    Amount = depositAmount,
-                    IsDeposit = true,
-                    SubmittedDate = DateTime.Now
-                }); 
+                    account.AccountBalance += depositAmount;
+                    account.Transactions.Add(new Transaction
+                    {
+                        IsDeposit = true,
+                        Amount = depositAmount,
+                        SubmittedDate = DateTime.Now
+                    });
+                }
+                else
+                {
+                    account.Messages.Add("Invalid amount.  Please try again.");
+                }
             }
-            else
+            catch (Exception)
             {
-                account.Messages.Add("Invalid amount.  Please try again.");
+                //log exception
+                account.Messages.Add("Transaction error");
             }
             return account;
         }
 
         public Account Withdraw(Account account, string amount)
         {
-            var withdrawAmount = 0m;
-            decimal.TryParse(amount, out withdrawAmount);
-            if (withdrawAmount <= 0 || account.AccountBalance >= withdrawAmount)
+            try
             {
-                account.AccountBalance -= withdrawAmount;
-                account.Transactions.Add(new Transaction
+                var withdrawAmount = 0m;
+                decimal.TryParse(amount, out withdrawAmount);
+                if (withdrawAmount <= 0 || account.AccountBalance >= withdrawAmount)
                 {
-                    Amount = withdrawAmount,
-                    IsDeposit = true,
-                    SubmittedDate = DateTime.Now
-                });
+                    account.AccountBalance -= withdrawAmount;
+                    account.Transactions.Add(new Transaction
+                    {
+                        Amount = withdrawAmount,
+                        SubmittedDate = DateTime.Now
+                    });
+                }
+                else
+                {
+                    account.Messages.Add("Insufficient funds or invalid input.");
+                }
             }
-            else
+            catch (Exception)
             {
-                account.Messages.Add("Insufficient funds or invalid input.");
+                //log exception
+                account.Messages.Add("Transaction error");
             }
             return account;
+        }
+
+        public bool LessThanThreeDecimalPlaces(decimal input)
+        {
+            var response = false;
+            if (Decimal.Round(input, 2) == input)
+            {
+                response = true;
+            }
+            return response;
         }
     }
 }

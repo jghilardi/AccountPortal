@@ -16,6 +16,5 @@ namespace AccountPortal.Domain.Models
         public decimal AccountBalance { get; set; }
         public List<Transaction> Transactions { get; set; }
         public List<string> Messages { get; set; }
-        public bool IsActive { get; set; }
     }
 }
