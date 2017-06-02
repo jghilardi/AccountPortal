@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("AccountPortal.data")]
+[assembly: AssemblyTitle("AccountPortal.Data")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Genesis Financial Solutions")]
-[assembly: AssemblyProduct("AccountPortal.data")]
+[assembly: AssemblyProduct("AccountPortal.Data")]
 [assembly: AssemblyCopyright("Copyright © Genesis Financial Solutions 2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

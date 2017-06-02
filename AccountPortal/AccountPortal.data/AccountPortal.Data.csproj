@@ -7,8 +7,8 @@
     <ProjectGuid>{432E274F-B911-420C-BF02-BDE7F01F6F04}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AccountPortal.data</RootNamespace>
-    <AssemblyName>AccountPortal.data</AssemblyName>
+    <RootNamespace>AccountPortal.Data</RootNamespace>
+    <AssemblyName>AccountPortal.Data</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

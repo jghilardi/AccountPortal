@@ -64,7 +64,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AccountPortal.data\AccountPortal.Data.csproj">
+    <ProjectReference Include="..\AccountPortal.Data\AccountPortal.Data.csproj">
       <Project>{432e274f-b911-420c-bf02-bde7f01f6f04}</Project>
       <Name>AccountPortal.Data</Name>
     </ProjectReference>

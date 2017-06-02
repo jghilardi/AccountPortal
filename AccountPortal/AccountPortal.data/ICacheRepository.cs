@@ -1,6 +1,6 @@
 ﻿using LazyCache;
 
-namespace AccountPortal.data
+namespace AccountPortal.Data
 {
     public interface ICacheRepository
     {
