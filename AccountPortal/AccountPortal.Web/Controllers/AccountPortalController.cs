@@ -25,9 +25,9 @@ namespace AccountPortal.Web.Controllers
         }
 
         [Route("GetAccount")]
-        public JsonResult GetAccount(Account account)
+        public JsonResult GetAccount(Account account, string password)
         {
-            var getAccount = _accountProcessor.GetAccount(account);
+            var getAccount = _accountProcessor.GetAccount(account, password);
 
             return new JsonResult
             {
