@@ -155,7 +155,7 @@ namespace AccountPortal.Domain.Processors
             account.Password = Console.ReadLine();
 
             var getAccount = cache.Get<Account>(account.Username);
-            return _accountProcessor.GetAccount(getAccount);
+            return _accountProcessor.GetAccount(getAccount, account.Password);
         }
 
         public Account AddNewAccount(IAppCache cache)
@@ -169,7 +169,7 @@ namespace AccountPortal.Domain.Processors
             var response =  _accountProcessor.AddAccount(account);
             if (response != null)
             {
-                cache.Add<Account>(response.Username, response);
+                cache.Add(response.Username, response);
             }
             return response;
         }

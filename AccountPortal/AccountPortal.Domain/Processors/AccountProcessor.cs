@@ -45,12 +45,12 @@ namespace AccountPortal.Domain.Processors
             return response;
         }
 
-        public Account GetAccount(Account account)
+        public Account GetAccount(Account account, string password)
         {
             var response = new Account();
             try
             {
-                if (account != null && account.Password == _encryptionUtility.Decrypt(account.Password))
+                if (account != null && password == _encryptionUtility.Decrypt(account.Password))
                 {
                     var accountResponse = new Account
                     {
@@ -67,7 +67,7 @@ namespace AccountPortal.Domain.Processors
                 }
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 //log exception
                 response.Messages.Add("An unknown error occured.");

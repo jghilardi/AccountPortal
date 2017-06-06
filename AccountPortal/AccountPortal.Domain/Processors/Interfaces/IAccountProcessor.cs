@@ -6,6 +6,6 @@ namespace AccountPortal.Domain.Processors.Interfaces
     public interface IAccountProcessor
     {
         Account AddAccount(Account account);
-        Account GetAccount(Account account);
+        Account GetAccount(Account account, string password);
     }
 }
