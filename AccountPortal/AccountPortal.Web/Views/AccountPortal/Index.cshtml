@@ -1,0 +1,51 @@
+﻿@{
+    ViewBag.Title = "AccountPortal";
+}
+<div class="row">
+    <div class="col-lg-12">
+        <h2>Welcome to the Generic Account Portal</h2>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            @*<div id="loader" url="@Url.Action("Action", "Controller")"></div>*@
+        </div>
+    </div>
+    <div ng-app="accountPortal">
+
+        <div ng-controller="accountPortalController">
+            <div class="row">
+                <form novalidate name="SearchForm" class="simple-form col-lg-8">
+                    <br /><br />
+                    <div>
+                        Username: <input type="text" ng-model="username"/><br /><br />
+                        Password: <input type="text" ng-model="password" >
+                    </div>
+                    <br/>
+                    <button type="submit" class="btn btn-primary" ng-click="getAccount()">Login</button>
+                    <button type="submit" class="btn btn-primary" ng-click="addAccount()">Create New Account</button>
+                </form>
+                <br/><br/>
+            </div>
+            <br/><br/>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Submitted Date</th>
+                        <th>Amount</th>
+                        <th>Transaction Type</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="transaction in activeUser.transactions">
+                        <td>{{transaction.submittedDate}}</td>
+                        <td>{{transaction.amount}}</td>
+                        <td>{{transaction.transactionType}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/Default/angular.js"></script>
+<script src="~/Scripts/AccountPortal/AccountPortal.js"></script>

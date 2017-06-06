@@ -15,16 +15,14 @@ namespace AccountPortal.Domain.Processors
             _encryptionUtility = encryptionUtility;
         }
 
-        public Account AddAccount(IAppCache cache, Account account)
+        public Account AddAccount(Account account)
         {
             var response = new Account();
             try
             {
-                var getAccount = cache.Get<Account>(account.Username);
-                if (getAccount == null && account.Username.Length < 50 && account.Password.Length > 3)
+                if (account.Username.Length < 50 && account.Password.Length > 3)
                 {
                     account.Password = _encryptionUtility.Encrypt(account.Password);
-                    cache.Add(account.Username, account);
                     var accountResponse = new Account
                     {
                         Username = account.Username,
@@ -47,20 +45,19 @@ namespace AccountPortal.Domain.Processors
             return response;
         }
 
-        public Account GetAccount(IAppCache cache, Account account)
+        public Account GetAccount(Account account)
         {
             var response = new Account();
             try
             {
-                var getAccount = cache.Get<Account>(account.Username);
-                if (getAccount != null && account.Password == _encryptionUtility.Decrypt(getAccount.Password))
+                if (account != null && account.Password == _encryptionUtility.Decrypt(account.Password))
                 {
                     var accountResponse = new Account
                     {
-                        Username = getAccount.Username,
-                        AccountBalance = getAccount.AccountBalance,
-                        Password = getAccount.Password,
-                        Transactions = getAccount.Transactions
+                        Username = account.Username,
+                        AccountBalance = account.AccountBalance,
+                        Password = account.Password,
+                        Transactions = account.Transactions
                     };
                     response = accountResponse;
                 }
@@ -76,12 +73,6 @@ namespace AccountPortal.Domain.Processors
                 response.Messages.Add("An unknown error occured.");
             }
             return response;
-        }
-
-        public void UpdateCache(IAppCache cache, Account activeUser)
-        {
-            cache.Remove(activeUser.Username);
-            cache.Add(activeUser.Username, activeUser);
         }
     }
 }

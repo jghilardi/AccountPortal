@@ -17,11 +17,17 @@ namespace AccountPortal.Domain.AppStart
             kernel.Bind<IEncryptionUtility>().To<EncryptionUtility>().InSingletonScope();
             kernel.Bind<ITransactionProcessor>().To<TransactionProcessor>().InSingletonScope();
             kernel.Bind<IAccountProcessor>().To<AccountProcessor>().InSingletonScope();
+            kernel.Bind<ICacheProcessor>().To<CacheProcessor>().InSingletonScope();
         }
 
         public static void RegisterWeb(IKernel kernel)
         {
-            
+            kernel.Bind<IAppCache>().To<CachingService>().InSingletonScope();
+            kernel.Bind<ICacheRepository>().To<CacheRepository>().InSingletonScope();
+            kernel.Bind<IEncryptionUtility>().To<EncryptionUtility>().InSingletonScope();
+            kernel.Bind<ITransactionProcessor>().To<TransactionProcessor>().InSingletonScope();
+            kernel.Bind<IAccountProcessor>().To<AccountProcessor>().InSingletonScope();
+            kernel.Bind<ICacheProcessor>().To<CacheProcessor>().InSingletonScope();
         }
     }
 }

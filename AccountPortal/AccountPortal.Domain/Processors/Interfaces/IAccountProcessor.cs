@@ -5,8 +5,7 @@ namespace AccountPortal.Domain.Processors.Interfaces
 {
     public interface IAccountProcessor
     {
-        Account AddAccount(IAppCache cache, Account account);
-        Account GetAccount(IAppCache cache, Account account);
-        void UpdateCache(IAppCache cache, Account activeUser);
+        Account AddAccount(Account account);
+        Account GetAccount(Account account);
     }
 }

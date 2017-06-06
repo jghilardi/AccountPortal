@@ -51,9 +51,11 @@
     <Compile Include="Models\Account.cs" />
     <Compile Include="Processors\AccountProcessor.cs" />
     <Compile Include="Models\ValidationResponse.cs" />
+    <Compile Include="Processors\CacheProcessor.cs" />
     <Compile Include="Processors\ConsoleProcessor.cs" />
     <Compile Include="Extensions\EncryptionUtility.cs" />
     <Compile Include="Processors\Interfaces\IAccountProcessor.cs" />
+    <Compile Include="Processors\Interfaces\ICacheProcessor.cs" />
     <Compile Include="Processors\Interfaces\IConsoleProcessor.cs" />
     <Compile Include="Processors\Interfaces\ITransactionProcessor.cs" />
     <Compile Include="Processors\TransactionProcessor.cs" />

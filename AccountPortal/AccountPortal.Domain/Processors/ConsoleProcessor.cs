@@ -10,20 +10,20 @@ namespace AccountPortal.Domain.Processors
 {
     public class ConsoleProcessor : IConsoleProcessor
     {
-        private readonly ICacheRepository _cacheRepository;
+        private readonly ICacheProcessor _cacheProcessor;
         private readonly IAccountProcessor _accountProcessor;
         private readonly ITransactionProcessor _transactionProcessor;
 
-        public ConsoleProcessor(ICacheRepository cacheRepository, IAccountProcessor accountProcessor, ITransactionProcessor transactionProcessor)
+        public ConsoleProcessor(ICacheProcessor cacheProcessor, IAccountProcessor accountProcessor, ITransactionProcessor transactionProcessor)
         {
-            _cacheRepository = cacheRepository;
+            _cacheProcessor = cacheProcessor;
             _accountProcessor = accountProcessor;
             _transactionProcessor = transactionProcessor;
         }
 
         public void Execute()
         {
-            var cache = _cacheRepository.GetCache();
+            var cache = _cacheProcessor.GetCache();
             GetRootMenu(cache);
         }
 
@@ -98,7 +98,7 @@ namespace AccountPortal.Domain.Processors
                         }
                         continue;
                     case 4:
-                        _accountProcessor.UpdateCache(cache,activeUser);
+                        UpdateCache(cache,activeUser);
                         GetRootMenu(cache);
                         break;
                     default:
@@ -154,7 +154,8 @@ namespace AccountPortal.Domain.Processors
             Console.WriteLine("Please enter your password: " + NewLine);
             account.Password = Console.ReadLine();
 
-            return _accountProcessor.GetAccount(cache,account);
+            var getAccount = cache.Get<Account>(account.Username);
+            return _accountProcessor.GetAccount(getAccount);
         }
 
         public Account AddNewAccount(IAppCache cache)
@@ -165,8 +166,12 @@ namespace AccountPortal.Domain.Processors
             account.Username = Console.ReadLine();
             Console.WriteLine("Please choose a password: " + NewLine);
             account.Password = Console.ReadLine();
-
-            return _accountProcessor.AddAccount(cache, account);
+            var response =  _accountProcessor.AddAccount(account);
+            if (response != null)
+            {
+                cache.Add<Account>(response.Username, response);
+            }
+            return response;
         }
 
         public int DisplayTransactionMenu(decimal accountBalance)
@@ -179,6 +184,12 @@ namespace AccountPortal.Domain.Processors
             Console.WriteLine("4. Logout of current account" + NewLine);
 
             return ValidateMenuInput();
+        }
+
+        public void UpdateCache(IAppCache cache, Account activeUser)
+        {
+            cache.Remove(activeUser.Username);
+            cache.Add(activeUser.Username, activeUser);
         }
     }
 }

@@ -1,64 +1,51 @@
-﻿var app = angular.module("gpccAccountLookup", ["angular-spinkit", "ui.grid", "ui.grid.resizeColumns", "ui.grid.moveColumns", "ui.grid.saveState", "ngCookies"]);
+﻿var app = angular.module("accountPortal", []);
 
+app.controller("accountPortalController", ["$scope", "$cacheFactory" ,"$http", function ($scope, $cacheFactory, $http) {
 
-app.controller("lookUpController", ["$scope", "$cookieStore", "$http", function ($scope, $cookieStore, $http) {
-
-
-        var inputs = { badName: false }
+        var cache = $cacheFactory('username');
+        //var activeUser = new object;
+        //expect($cacheFactory.get('username')).toBe(cache);
+        //expect($cacheFactory.get('usernameNotFound')).not.toBeDefined();
 
         var validateNameRegex = function (name) {
             var regex = /^[a-zA-Z ,.'-]+$/;
-            if (name.match(regex) != null) {
+            if (name.match(regex) !== null) {
                 return true;
             }
             return false;
         };
 
-        //#region validation
-
-        //name
-        var validateFirstName = function () {
-            inputCounter += 1;
-            if ($scope.firstName.length < 46 && validateNameRegex($scope.firstName)) {
+        var validateUsername = function () {
+            if ($scope.username.length < 46 && validateNameRegex($scope.username)) {
                 return true;
             } else {
-                inputs.badName = true;
                 return false;
             }
         };
-        var validateOrPassFirstName = function () {
-            if ($scope.firstName) {
-                return !!validateFirstName();
+        var validatePassword = function () {
+            if ($scope.password.length > 4) {
+                return validatePassword();
             }
-            return true;
+            return false;
         };
-
-
-
-
-
 
         var passValidation = function () {
             var response = false;
-            if (validateOrPassFirstName()){
+            if (validateUsername()){
                 response = true;
             } else {
-
                     toastr.error("Name must be within length parameters and contain valid characters only.");                          
                 }
             return response;
         }
 
-        //var checkDobForNull = function () {
-        //    if ($scope.dateOfBirth) {
-        //        return $scope.dateOfBirth.toDateString();
-        //    } else {
-        //        return new Date().toDateString();
-        //    }
-        //}
-        //#endregion
+        var PopulateAccount = function () {
+            activeUser.username = response.username;
+            activeUser.password = response.password;
+            activeUser.transactions = response.transactions;
+            activeUser.accountBalance = response.accountBalance;
+        }
 
-        //#region grid options
         $scope.gridOptions = {
             enableColumnResizing: true,
             enableFiltering: true,
@@ -68,44 +55,42 @@ app.controller("lookUpController", ["$scope", "$cookieStore", "$http", function 
             },
 
             columns: [
-                { name: "Application Id", field: "ApplicationId", width: '*' },
-                { name: "Prequalification Id", field: "PrequalificationId", width: '*' },
-                { name: "Submitted On", field: "SubmissionDateTime", width: '*', enableFiltering: false, cellFilter: 'date' },
+                { name: "Submitted Date", field: "SubmittedDate", width: '*' },
+                { name: "Amount", field: "Amount", width: '*' },
+                { name: "Transaction Type", field: "TransactionType", width: '*', enableFiltering: false, cellFilter: 'date' },
             ]
         }
-        //#endregion
 
-        $scope.getAccount = function () {
-
+        $scope.addAccount = function () {
             if (passValidation()) {
-                $scope.showSpinner = true;
-                var lookup = {
-                    //username: $scope.startDate.toDateString(),
-                    //transactions: $scope.endDate.toDateString(),
-                    //firstName: $scope.firstName,
-                    //middleInitial: $scope.middleInitial
+                var account = {
+                    username: $scope.username,
+                    password: $scope.password
                 }
-                var url = "/GetAccount/";
-                $http.post(url, lookup)
-                    .success(function (data) {
-                        $scope.gridOptions.data = data.account;
-                        if (data.account == null) {
-                            toastr.info("No accounts found.");
-                        }
-                        $scope.showSpinner = false;
-                    })
-                    .error(function (data) {
-                        toastr.error("Failed to get account.", { timeout: 2000 });
-                        $scope.showSpinner = false;
-                    });
+                var url = "/AccountPortal/AddAccount/";
+                var response = $http.post(url, account)
+                cache.put(account.username, account);
+                activeUser.username = response.username;
+                activeUser.password = response.password;
+                activeUser.accountBalance = 0;
+                return activeUser;
             }
         };
 
-        //$scope.$watch("status", function () {
-        //    $scope.firstName = "";
-        //    $scope.lastName = "";
-        //    $scope.middleInitial = "";
-        //    $scope.applicationId = "";
-        //});
+        $scope.getAccount = function () {
+            if (passValidation()) {
+                var account = {
+                    username: $scope.username,
+                    password: $scope.password
+                }
+                var url = "/AccountPortal/GetAccount/";
+                var response = $http.post(url, account)
+                cache.get(account.username, account);
+                activeUser.username = response.username;
+                activeUser.password = response.password;
+                activeUser.accountBalance = response.accountBalance;
+                activeUser.transactions = response.transactions;
+            }
+        };
     }
 ]);

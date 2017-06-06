@@ -14,5 +14,6 @@ namespace AccountPortal.Domain.Processors.Interfaces
         Account LoginAccount(IAppCache cache);
         Account AddNewAccount(IAppCache cache);
         int DisplayTransactionMenu(decimal accountBalance);
+        void UpdateCache(IAppCache cache, Account activeUser);
     }
 }
