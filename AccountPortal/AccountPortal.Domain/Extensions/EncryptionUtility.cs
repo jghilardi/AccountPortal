@@ -7,6 +7,7 @@ namespace AccountPortal.Domain.Extensions
 {
     public class EncryptionUtility : IEncryptionUtility
     {
+        //this is from stackoverflow, slightly modified
         public string Encrypt(string plainText)
         {
             var encryptionKey = "NaCl";
