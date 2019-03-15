@@ -39,7 +39,6 @@ namespace AccountPortal.Domain.Processors
             }
             catch (Exception)
             {
-                //log exception
                 response.Messages.Add("An unknown error occurred.");
             }
             return response;
@@ -65,7 +64,6 @@ namespace AccountPortal.Domain.Processors
                 {
                     response.Messages.Add("Invalid user name or password.");
                 }
-
             }
             catch (Exception ex)
             {

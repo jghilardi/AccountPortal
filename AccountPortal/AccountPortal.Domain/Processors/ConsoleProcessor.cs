@@ -27,7 +27,7 @@ namespace AccountPortal.Domain.Processors
             GetRootMenu(cache);
         }
 
-        public void GetRootMenu(IAppCache cache)
+        private void GetRootMenu(IAppCache cache)
         {
             while (true)
             {
@@ -67,7 +67,7 @@ namespace AccountPortal.Domain.Processors
             }
         }
 
-        public void GetTransactionMenu(IAppCache cache, Account activeUser)
+        private void GetTransactionMenu(IAppCache cache, Account activeUser)
         {
             while (true)
             {
@@ -111,7 +111,7 @@ namespace AccountPortal.Domain.Processors
             }
         }
 
-        public void ShowHistoricalTransactions(Account activeUser)
+        private static void ShowHistoricalTransactions(Account activeUser)
         {
             if (activeUser.Transactions.Count > 0)
             {
@@ -128,7 +128,7 @@ namespace AccountPortal.Domain.Processors
             }
         }
 
-        public int DisplayRootMenu()
+        private static int DisplayRootMenu()
         {
             Console.WriteLine("Welcome to the Generic Account Portal. Please choose from the following options: " + NewLine);
             Console.WriteLine("1. Create new account" + NewLine);
@@ -137,14 +137,14 @@ namespace AccountPortal.Domain.Processors
             return ValidateMenuInput();
         }
 
-        public int ValidateMenuInput()
+        private static int ValidateMenuInput()
         {
             var input = Console.ReadLine();
             int.TryParse(input, out var output);
             return output;
         }
 
-        public Account LoginAccount(IAppCache cache)
+        private Account LoginAccount(IAppCache cache)
         {
             var account = new Account();
 
@@ -157,7 +157,7 @@ namespace AccountPortal.Domain.Processors
             return _accountProcessor.GetAccount(getAccount, account.Password);
         }
 
-        public Account AddNewAccount(IAppCache cache)
+        private Account AddNewAccount(IAppCache cache)
         {
             var account = new Account();
 
@@ -173,7 +173,7 @@ namespace AccountPortal.Domain.Processors
             return response;
         }
 
-        public int DisplayTransactionMenu(decimal accountBalance)
+        private static int DisplayTransactionMenu(decimal accountBalance)
         {
             Console.WriteLine($"Your account balance is: ${accountBalance}" + NewLine);
             Console.WriteLine("Please select from the following options: " + NewLine);
@@ -185,7 +185,7 @@ namespace AccountPortal.Domain.Processors
             return ValidateMenuInput();
         }
 
-        public void UpdateCache(IAppCache cache, Account activeUser)
+        private static void UpdateCache(IAppCache cache, Account activeUser)
         {
             cache.Remove(activeUser.Username);
             cache.Add(activeUser.Username, activeUser);
