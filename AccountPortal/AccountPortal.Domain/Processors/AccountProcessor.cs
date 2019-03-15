@@ -34,13 +34,13 @@ namespace AccountPortal.Domain.Processors
                 }
                 else
                 {
-                    response.Messages.Add("Invalid username or password.");
+                    response.Messages.Add("Invalid user name or password.");
                 }
             }
             catch (Exception)
             {
                 //log exception
-                response.Messages.Add("An unknown error occured.");
+                response.Messages.Add("An unknown error occurred.");
             }
             return response;
         }
@@ -63,14 +63,14 @@ namespace AccountPortal.Domain.Processors
                 }
                 else
                 {
-                    response.Messages.Add("Invalid username or password.");
+                    response.Messages.Add("Invalid user name or password.");
                 }
 
             }
             catch (Exception ex)
             {
                 //log exception
-                response.Messages.Add("An unknown error occured.");
+                response.Messages.Add("An unknown error occurred. Exception: " + ex);
             }
             return response;
         }

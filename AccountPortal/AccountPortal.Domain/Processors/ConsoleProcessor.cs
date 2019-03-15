@@ -60,7 +60,7 @@ namespace AccountPortal.Domain.Processors
                 }
                 else
                 {
-                    Console.WriteLine("An unknown error has occured.");
+                    Console.WriteLine("An unknown error has occurred.");
                     continue;
                 }
                 break;
@@ -139,9 +139,8 @@ namespace AccountPortal.Domain.Processors
 
         public int ValidateMenuInput()
         {
-            var output = 0;
             var input = Console.ReadLine();
-            int.TryParse(input, out output);
+            int.TryParse(input, out var output);
             return output;
         }
 
@@ -149,7 +148,7 @@ namespace AccountPortal.Domain.Processors
         {
             var account = new Account();
 
-            Console.WriteLine(NewLine + "Please enter your username: " + NewLine);
+            Console.WriteLine(NewLine + "Please enter your user name: " + NewLine);
             account.Username = Console.ReadLine();
             Console.WriteLine("Please enter your password: " + NewLine);
             account.Password = Console.ReadLine();
@@ -162,7 +161,7 @@ namespace AccountPortal.Domain.Processors
         {
             var account = new Account();
 
-            Console.WriteLine(NewLine + "Please choose a username: " + NewLine);
+            Console.WriteLine(NewLine + "Please choose a user name: " + NewLine);
             account.Username = Console.ReadLine();
             Console.WriteLine("Please choose a password: " + NewLine);
             account.Password = Console.ReadLine();
