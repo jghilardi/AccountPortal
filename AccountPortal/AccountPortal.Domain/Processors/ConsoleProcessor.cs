@@ -1,5 +1,4 @@
 ﻿using System;
-using AccountPortal.Data;
 using AccountPortal.Domain.Models;
 using AccountPortal.Domain.Processors.Interfaces;
 using LazyCache;
@@ -118,7 +117,7 @@ namespace AccountPortal.Domain.Processors
                 Console.WriteLine(NewLine + "Submitted date " + " --- " + "Amount" + " --- " + "Transaction type");
                 foreach (var transaction in activeUser.Transactions)
                 {
-                    var transactionType = transaction.IsDeposit ? "Deposit" : "Withdrawl";
+                    var transactionType = transaction.IsDeposit ? "Deposit" : "Withdrawal";
                     Console.WriteLine(transaction.SubmittedDate.ToLongDateString() + " --- " + transaction.Amount + " --- " + transactionType + NewLine);
                 }
             }
@@ -165,7 +164,7 @@ namespace AccountPortal.Domain.Processors
             account.Username = Console.ReadLine();
             Console.WriteLine("Please choose a password: " + NewLine);
             account.Password = Console.ReadLine();
-            var response =  _accountProcessor.AddAccount(account);
+            var response = _accountProcessor.AddAccount(account);
             if (response != null)
             {
                 cache.Add(response.Username, response);

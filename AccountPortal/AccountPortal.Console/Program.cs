@@ -6,8 +6,7 @@ namespace AccountPortal
 {
     internal class Program
     {
-        
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             var kernel = new StandardKernel();
             kernel.Load(Assembly.GetExecutingAssembly());

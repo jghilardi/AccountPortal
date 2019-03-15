@@ -1,7 +1,6 @@
 ﻿using System;
 using AccountPortal.Domain.Models;
 using AccountPortal.Domain.Processors.Interfaces;
-using System.Globalization;
 
 namespace AccountPortal.Domain.Processors
 {
@@ -11,8 +10,7 @@ namespace AccountPortal.Domain.Processors
         {
             try
             {
-                var depositAmount = 0m;
-                decimal.TryParse(amount, out depositAmount);
+                decimal.TryParse(amount, out var depositAmount);
                 if (depositAmount > 0 && depositAmount <= 99999 && LessThanThreeDecimalPlaces(depositAmount))
                 {
                     account.AccountBalance += depositAmount;
@@ -28,10 +26,9 @@ namespace AccountPortal.Domain.Processors
                     account.Messages.Add("Invalid amount.  Please try again.");
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                //log exception
-                account.Messages.Add("Transaction error");
+                account.Messages.Add($"Transaction error: {ex}");
             }
             return account;
         }
@@ -40,14 +37,13 @@ namespace AccountPortal.Domain.Processors
         {
             try
             {
-                var withdrawAmount = 0m;
-                decimal.TryParse(amount, out withdrawAmount);
-                if (withdrawAmount <= 0 || account.AccountBalance >= withdrawAmount)
+                decimal.TryParse(amount, out var withdrawalAmount);
+                if (withdrawalAmount <= 0 || account.AccountBalance >= withdrawalAmount)
                 {
-                    account.AccountBalance -= withdrawAmount;
+                    account.AccountBalance -= withdrawalAmount;
                     account.Transactions.Add(new Transaction
                     {
-                        Amount = withdrawAmount,
+                        Amount = withdrawalAmount,
                         SubmittedDate = DateTime.Now
                     });
                 }
@@ -56,22 +52,16 @@ namespace AccountPortal.Domain.Processors
                     account.Messages.Add("Insufficient funds or invalid input.");
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                //log exception
-                account.Messages.Add("Transaction error");
+                account.Messages.Add($"Transaction error: {ex}");
             }
             return account;
         }
 
         public bool LessThanThreeDecimalPlaces(decimal input)
         {
-            var response = false;
-            if (Decimal.Round(input, 2) == input)
-            {
-                response = true;
-            }
-            return response;
+            return decimal.Round(input, 2) == input;
         }
     }
 }
